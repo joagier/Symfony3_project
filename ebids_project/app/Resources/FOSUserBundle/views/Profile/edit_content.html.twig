@@ -1,0 +1,23 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+    </div>
+
+{{ form_end(form) }}
+
+<br>
+
+<button class="btn btn-danger" onclick="deleteAccount()">Supprimer mon compte ebids</button>
+
+<script>
+    function deleteAccount() {
+        if (confirm("Etes-vous sûr(e) de vouloir supprimer l'ensemble de vos informations ?")) {
+            document.location.href="/deleteuser"
+        } else {
+
+        }
+    }
+</script>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Product edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('user_index') }}">Back to the list</a>
+        </li>
+    </ul>
+
+    <button class="btn btn-danger" onclick="deleteAccount()">Supprimer utilisateur</button>
+
+    <script>
+        function deleteAccount() {
+            if (confirm("Etes-vous sûr(e) de vouloir supprimer l'ensemble de vos informations ?")) {
+                document.location.href="/admin/deleteuser/" + {{ user.id }}
+            } else {
+
+            }
+        }
+    </script>
+
+{% endblock %}

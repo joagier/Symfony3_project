@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ user.username }}</h1><br>
+
+    <table class="table table-bordered">
+        <tbody>
+
+        <tr>
+            <th>Id</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Adresse</th>
+            <td>{{ user.address }}</td>
+        </tr>
+        <tr>
+            <th>Rôle</th>
+            <td>{{ user.roles[0] }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('user_index') }}">Retour à la liste des utilisateurs</a>
+        </li>
+        <li class="list-group-item">
+            Lien vers édition
+        </li>
+    </ul><br>
+
+
+    <h3>Avis</h3>
+    <h5>Note moyenne : {{ user.averageRate }}</h5><br>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>Utilisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ratings in user.userRatings %}
+            <tr>
+                <td>{{ ratings.rate }}</td>
+                <td>{{ ratings.comment }}</td>
+                <td>{{ ratings.username }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

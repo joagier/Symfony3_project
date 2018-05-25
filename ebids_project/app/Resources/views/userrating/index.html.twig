@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userratings list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rate</th>
+                <th>Comment</th>
+                <th>Username</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userRating in userRatings %}
+            <tr>
+                <td><a href="{{ path('userrating_show', { 'id': userRating.id }) }}">{{ userRating.id }}</a></td>
+                <td>{{ userRating.rate }}</td>
+                <td>{{ userRating.comment }}</td>
+                <td>{{ userRating.username }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('userrating_show', { 'id': userRating.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('userrating_edit', { 'id': userRating.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userrating_new') }}">Create a new userRating</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userrating</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ userRating.id }}</td>
+            </tr>
+            <tr>
+                <th>Rate</th>
+                <td>{{ userRating.rate }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ userRating.comment }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ userRating.username }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userrating_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('userrating_edit', { 'id': userRating.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

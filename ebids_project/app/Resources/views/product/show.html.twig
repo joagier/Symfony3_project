@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ product.name }}</h1><br>
+
+    <table class="table table-bordered">
+        <tbody>
+
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ product.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ product.price }}</td>
+            </tr>
+            {% if (product.immediatePrice != null) %}
+            <tr>
+                <th>Prix Achat immédiat</th>
+                <td>{{ product.immediatePrice }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Vendeur</th>
+                <td><a href="{{ path('user_products_index', { 'id': product.user.id }) }}">{{ product.user }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('product_index') }}">Retour à la liste des produits</a>
+        </li>
+        {% if product.user.username == app.user.username or app.user.roles[0] == 'ROLE_ADMIN' %}
+        <li class="list-group-item">
+            <a href="{{ path('product_edit', { 'id': product.id }) }}">Editer</a>
+        </li>
+        <li class="list-group-item">
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+        {% endif %}
+        {% if product.user.username != app.user.username %}
+            <li class="list-group-item">
+                <p>
+                    {% if (product.immediatePrice != null) and (app.user.username != product.user.username) and (product.endDate != null) %}
+                    <p><a href="{{ path('immediate_purchase', { 'id': product.id }) }}"><button class="btn btn-info">Achat immédiat</button></a></p>
+                    {% endif %}
+                    {% if (app.user.username != product.user.username) and (product.endDate != null) %}
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Enchérir
+                    </button>
+                    {% endif %}
+                    <p><a href="{{ path('productrating_add', { 'id': product.id }) }}"><button class="btn btn-info">Donner un avis</button></a></p>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        {{ form_start(bidForm) }}
+                        {{ form_widget(bidForm) }}
+                        <input type="submit" value="Valider" />
+                        {{ form_end(bidForm) }}
+                    </div>
+                </div>
+            </li>
+        {% endif %}
+    </ul><br>
+
+
+    <h3>Avis</h3>
+    <h5>Note moyenne : {{ product.averageRate }}</h5><br>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>Utilisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ratings in product.productRatings %}
+        <tr>
+            <td>{{ ratings.rate }}</td>
+            <td>{{ ratings.comment }}</td>
+            <td>{{ ratings.username }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

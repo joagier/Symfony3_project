@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <h1> Ma liste d'achats</h1><br>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Vendeur</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
+                <td><a href="{{ path('user_products_index', { 'id': product.user.id }) }}">{{ product.user }}</a></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
+                        </li>
+                        {% if (app.user) and app.user.id == product.user.id %}
+                            <li class="list-group-item">
+                                <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

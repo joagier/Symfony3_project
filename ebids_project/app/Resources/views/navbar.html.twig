@@ -1,0 +1,60 @@
+{% block navbar %}
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">eBids</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            {% if (app.user) and (app.user.roles[0] == "ROLE_ADMIN") %}
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin/user">Admin</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/product">Produits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/category/list">Produits par categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/category">Categories</a>
+            </li>
+            {% if (app.user) and (app.user.roles[0] != "ROLE_ADMIN") %}
+            <li class="nav-item">
+                <a class="nav-link" href="/purchase">Mes achats</a>
+            </li>
+            {% endif %}
+
+        </ul>
+        <ul class="navbar-nav">
+            {% if  app.user == null  %}
+            <li class="nav-item">
+                <a class="nav-link" href="/register"><button class="btn btn-primary">Register</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login"><button class="btn btn-success">Login</button></a>
+            </li>
+            {% endif %}
+            {% if  app.user  %}
+            <li class="nav-item">
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Bonjour {{ app.user.username }}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <a class="dropdown-item" href="/profile/edit">Edit profile</a>
+                        <a class="dropdown-item" href="/profile/change-password">Change password</a>
+                    </div>
+                </li>
+
+                <li>
+                <a class="nav-link" href="/logout"> <button class="btn btn-outline-danger">logout</button></a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+{% endblock %}

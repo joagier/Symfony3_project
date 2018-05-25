@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Produits proposés par {{ user.username }}</h1><br>
+
+    <p><a href="{{ path('userrating_add', { 'id': user.id }) }}"><button class="btn btn-info">Donner un avis</button></a>
+    </p>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Vendeur</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
+                <td>{{ product.user }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
+                        </li>
+                        {% if user.id == product.user.id %}
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or product.user.username == app.user.username %}
+                        <li class="list-group-item">
+                            <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
+                        </li>
+                        {% endif %}
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Avis</h3>
+    <h5>Note moyenne : {{ user.averageRate }}</h5><br>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>Utilisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ratings in user.userRatings %}
+            <tr>
+                <td>{{ ratings.rate }}</td>
+                <td>{{ ratings.comment }}</td>
+                <td>{{ ratings.username }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1> <br>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>email</th>
+            <th>address</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id}}</a></td>
+
+                <td><a href="{{ path('user_products_index', { 'id': user.id }) }}">{{ user.username }}</a></td>
+                <td>{{ user.email}}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.roles[0] }}</td>
+                <td>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ path('user_products_index', { 'id': user.id }) }}">Voir les produits</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ path('user_edit', { 'id': user.id }) }}">Editer</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

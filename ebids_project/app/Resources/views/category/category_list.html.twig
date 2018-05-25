@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Liste des categories</h1>
+    <br>
+
+    <p><a href="{{ path('category_new') }}"><button class="btn btn-info">Créer une catégorie</button></a></p>
+
+    {% import _self as macro %}
+
+    {{ macro.multilevel(categories) }}
+
+    {% macro multilevel(categories) %}
+        {% import _self as macro %}
+        <ul class="list-group">
+            {% for category in categories %}
+                <li class="list-group-item">
+                    <td><a href="{{ path('category_products', { 'id': category.id }) }}">{{ category.name }}</a></td>
+                    {% if category.children is iterable %}
+                        {{ macro.multilevel(category.children) }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endmacro %}
+{% endblock %}
