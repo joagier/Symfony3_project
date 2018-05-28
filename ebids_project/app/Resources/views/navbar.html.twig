@@ -20,9 +20,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/category">Categories</a>
             </li>
-            {% if (app.user) and (app.user.roles[0] != "ROLE_ADMIN") %}
+            {% if (app.user) and (app.user.username != "admin") %}
             <li class="nav-item">
                 <a class="nav-link" href="/purchase">Mes achats</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/sellerspace">Mon espace de vente</a>
             </li>
             {% endif %}
 

@@ -112,6 +112,22 @@ class Product
     private $nbRate;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Bid", mappedBy="product", cascade={"remove"})
+     */
+    private $maxBiddings;
+
+    private $oldBidding;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_visit", type="integer", nullable=true)
+     */
+    private $nbVisit;
+
+    /**
      * Get id
      *
      * @return int
@@ -323,6 +339,7 @@ class Product
      */
     public function setBiddingPrice($biddingPrice)
     {
+        $this->oldBidding = $this->biddingPrice;
         $this->biddingPrice = $biddingPrice;
 
         return $this;
@@ -431,5 +448,81 @@ class Product
     public function getNbRate()
     {
         return $this->nbRate;
+    }
+
+    /**
+     * Add maxBidding
+     *
+     * @param \AppBundle\Entity\Bid $maxBidding
+     *
+     * @return Product
+     */
+    public function addMaxBidding(\AppBundle\Entity\Bid $maxBidding)
+    {
+        $this->maxBiddings[] = $maxBidding;
+
+        return $this;
+    }
+
+    /**
+     * Remove maxBidding
+     *
+     * @param \AppBundle\Entity\Bid $maxBidding
+     */
+    public function removeMaxBidding(\AppBundle\Entity\Bid $maxBidding)
+    {
+        $this->maxBiddings->removeElement($maxBidding);
+    }
+
+    /**
+     * Get maxBiddings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMaxBiddings()
+    {
+        return $this->maxBiddings;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOldBidding()
+    {
+        return $this->oldBidding;
+    }
+
+    /**
+     * @param mixed $oldBidding
+     * @return Product
+     */
+    public function setOldBidding($oldBidding)
+    {
+        $this->oldBidding = $oldBidding;
+        return $this;
+    }
+
+    /**
+     * Set nbVisit
+     *
+     * @param integer $nbVisit
+     *
+     * @return Product
+     */
+    public function setNbVisit($nbVisit)
+    {
+        $this->nbVisit = $nbVisit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbVisit
+     *
+     * @return integer
+     */
+    public function getNbVisit()
+    {
+        return $this->nbVisit;
     }
 }

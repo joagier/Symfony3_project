@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h3> Vues de votre profil : {{ app.user.nbVisit }}</h3>
+
+    <h1> Produits en vente</h1>
+
+    <p><a href="{{ path('product_new') }}"><button class="btn btn-info">Créer un produit</button></a></p>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Vendeur</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Il reste :</th>
+            <th>Actions</th>
+            <th>Vues</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            {% if product.endDate != null %}
+            <tr>
+                <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
+                <td><a href="{{ path('user_products_index', { 'id': product.user.id }) }}">{{ product.user }}</a></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td id="countdown">{{ product.endDate|date('d-m-Y H:i:s') }}</td>
+                <td>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
+                        </li>
+                        {% if is_granted('ROLE_USER') and product.user==app.user  %}
+                            <li class="list-group-item">
+                                <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </td>
+                <td>{{ product.nbVisit }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <h1> Produits vendus</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Vendeur</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Il reste :</th>
+            <th>Actions</th>
+            <th>Vues</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            {% if product.endDate == null %}
+                <tr>
+                    <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
+                    <td><a href="{{ path('user_products_index', { 'id': product.user.id }) }}">{{ product.user }}</a></td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td id="countdown">{{ product.endDate|date('d-m-Y H:i:s') }}</td>
+                    <td>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
+                            </li>
+                            {% if is_granted('ROLE_USER') and product.user==app.user  %}
+                                <li class="list-group-item">
+                                    <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </td>
+                    <td>{{ product.nbVisit }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

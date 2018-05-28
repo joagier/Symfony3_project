@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Bid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -52,6 +53,11 @@ class ProductController extends Controller
         $user = $em->getRepository('AppBundle:User')->findBy(
             array('id' => $id));
 
+        if ($this->getUser()->getId() != $id) {
+            $user[0]->setNbVisit($user[0]->getNbVisit() +1);
+            $em->flush();
+        }
+
         return $this->render('product/index_user_products.html.twig', array(
             'products' => $products,
             'user' => $user[0],
@@ -93,19 +99,34 @@ class ProductController extends Controller
      */
     public function showAction(Request $request, Product $product)
     {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('AppBundle:Product')->find($product->getId());
+
+        if ($this->getUser() != $product->getUser()) {
+            $product->setNbVisit($product->getNbVisit() +1);
+            $em->flush();
+        }
+
+        $bid = new Bid();
+
         $deleteForm = $this->createDeleteForm($product);
 
         $bidForm = $this->createFormBuilder($product)
         ->add('biddingPrice')
             ->getForm();
 
+        $autoBidForm = $this->createFormBuilder($bid)
+            ->add('maxBid')
+            ->getForm();
+
+        $autoBidForm->handleRequest($request);
+
+
         $bidForm->handleRequest($request);
 
         if ($bidForm->isSubmitted() && $bidForm->isValid()) {
             $biddingPrice = $bidForm->getData()->getBiddingPrice();
             if ($biddingPrice < $product->getImmediatePrice() || $product->getImmediatePrice() == null) {
-                $em = $this->getDoctrine()->getManager();
-                $product = $em->getRepository('AppBundle:Product')->find($product->getId());
                 $product->setBuyer($this->getUser());
                 $product->setPrice($biddingPrice);
                 $em->flush();
@@ -113,11 +134,28 @@ class ProductController extends Controller
             } else {
                 return $this->redirectToRoute('immediate_purchase', array('id' => $product->getId()));
             }
-    }
+        }
+
+        if ($autoBidForm->isSubmitted() && $autoBidForm->isValid()) {
+            $autoBidPrice = $autoBidForm->getData()->getMaxBid();
+            if ($autoBidPrice > $product->getPrice() && $autoBidPrice < $product->getImmediatePrice()) {
+                $bid->setUser($this->getUser());
+                $bid->setProduct($product);
+                $em->persist($bid);
+                $em->flush();
+            } else {
+                $this->addFlash(
+                    'notice',
+                    'L\'enchère auto doit être supérieure au prix du produit et inférieure au prix immédiat '
+                );
+            }
+        }
+
             return $this->render('product/show.html.twig', array(
             'product' => $product,
             'delete_form' => $deleteForm->createView(),
             'bidForm' => $bidForm->createView(),
+            'autoBidForm' => $autoBidForm->createView(),
         ));
     }
 

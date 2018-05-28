@@ -55,6 +55,16 @@ class UserRating
      */
     private $user;
 
+    private $oldRate;
+
+    /**
+     * @return mixed
+     */
+    public function getOldRate()
+    {
+        return $this->oldRate;
+    }
+
 
     /**
      * Get id

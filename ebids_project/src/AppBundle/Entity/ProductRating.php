@@ -88,8 +88,6 @@ class ProductRating
         return $this;
     }
 
-
-
     /**
      * Set rate
      *

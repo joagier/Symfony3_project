@@ -60,14 +60,19 @@
                         Enchérir
                     </button>
                     {% endif %}
-                    <p><a href="{{ path('productrating_add', { 'id': product.id }) }}"><button class="btn btn-info">Donner un avis</button></a></p>
+                <br><p><a href="{{ path('productrating_add', { 'id': product.id }) }}"><button class="btn btn-info">Donner un avis</button></a></p>
                 </p>
+
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                         {{ form_start(bidForm) }}
                         {{ form_widget(bidForm) }}
                         <input type="submit" value="Valider" />
                         {{ form_end(bidForm) }}
+                        {{ form_start(autoBidForm) }}
+                        {{ form_widget(autoBidForm) }}
+                        <input type="submit" value="Valider" />
+                        {{ form_end(autoBidForm) }}
                     </div>
                 </div>
             </li>

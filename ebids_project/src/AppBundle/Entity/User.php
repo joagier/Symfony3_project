@@ -50,6 +50,14 @@ class User extends BaseUser
      */
     private $productsBought;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_visit", type="integer", nullable=true)
+     */
+    private $nbVisit;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -257,5 +265,29 @@ class User extends BaseUser
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Set nbVisit
+     *
+     * @param integer $nbVisit
+     *
+     * @return User
+     */
+    public function setNbVisit($nbVisit)
+    {
+        $this->nbVisit = $nbVisit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbVisit
+     *
+     * @return integer
+     */
+    public function getNbVisit()
+    {
+        return $this->nbVisit;
     }
 }

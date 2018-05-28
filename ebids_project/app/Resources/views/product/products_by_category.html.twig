@@ -18,6 +18,7 @@
         </thead>
         <tbody>
         {% for product in products %}
+            {% if product.endDate != null %}
             <tr>
                 <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
                 <td><a href="{{ path('user_products_index', { 'id': product.user.id }) }}">{{ product.user }}</a></td>
@@ -37,6 +38,7 @@
                     </ul>
                 </td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

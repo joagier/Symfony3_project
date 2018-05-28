@@ -35,6 +35,8 @@ class ProductRating
      */
     private $rate;
 
+    private $oldRate;
+
     /**
      * @var Product
      *
@@ -68,7 +70,23 @@ class ProductRating
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOldRate()
+    {
+        return $this->oldRate;
+    }
 
+    /**
+     * @param mixed $oldRate
+     * @return ProductRating
+     */
+    public function setOldRate($oldRate)
+    {
+        $this->oldRate = $oldRate;
+        return $this;
+    }
 
     /**
      * Set rate
@@ -79,6 +97,7 @@ class ProductRating
      */
     public function setRate($rate)
     {
+        $this->oldRate = $this->rate;
         $this->rate = $rate;
 
         return $this;

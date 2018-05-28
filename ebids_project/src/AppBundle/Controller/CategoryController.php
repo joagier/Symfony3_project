@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Category controller.
@@ -14,6 +16,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
  */
 class CategoryController extends Controller
 {
+
+    public function getProducts($categories, $em, $products)
+    {
+        foreach($categories as $category) {
+            $products_temp = $em->getRepository('AppBundle:Product')->findBy(
+                array('category' => $category));
+
+            if ($products_temp != null) {
+                foreach ($products_temp as $product) {
+                    $products[] = $product;
+                }
+            }
+
+            if (sizeof($category->getChildren()) != 0) {
+                return $this->getProducts($category->getChildren(), $em, $products);
+            }
+
+        }
+
+        return $products;
+    }
 
     /**
      * Lists products by category.
@@ -27,11 +50,12 @@ class CategoryController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $products = $em->getRepository('AppBundle:Product')->findBy(
-            array('category' => $id));
+        $products_temp = [];
 
         $category = $em->getRepository('AppBundle:Category')->findBy(
             array('id' => $id));
+
+        $products = $this->getProducts($category, $em, $products_temp);
 
         return $this->render('product/products_by_category.html.twig', array(
             'products' => $products,

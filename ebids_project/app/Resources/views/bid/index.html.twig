@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bids list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Maxbid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bid in bids %}
+            <tr>
+                <td><a href="{{ path('bid_show', { 'id': bid.id }) }}">{{ bid.id }}</a></td>
+                <td>{{ bid.maxBid }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('bid_show', { 'id': bid.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('bid_edit', { 'id': bid.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('bid_new') }}">Create a new bid</a>
+        </li>
+    </ul>
+{% endblock %}

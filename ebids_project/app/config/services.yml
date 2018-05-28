@@ -35,6 +35,12 @@ services:
     AppBundle\EventListener\UserRatingCalculator:
             tags:
                 - { name: doctrine.event_subscriber, connection: default }
+    AppBundle\EventListener\AutomaticBidding:
+                tags:
+                    - { name: doctrine.event_subscriber, connection: default }
+    AppBundle\EventListener\ProductBidding:
+                    tags:
+                        - { name: doctrine.event_subscriber, connection: default }
     app.form.registration:
             class: AppBundle\Form\RegistrationType
             tags:

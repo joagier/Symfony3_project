@@ -46,8 +46,17 @@ class User extends BaseUser
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="buyer")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $productsBought;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_visit", type="integer")
+     */
+    private $nbVisit;
+
 
     public function __construct()
     {
@@ -232,5 +241,29 @@ class User extends BaseUser
     public function getUserRatings()
     {
         return $this->userRatings;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }
